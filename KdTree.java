@@ -12,7 +12,7 @@ public class KdTree {
 
     public KdTree() {
         root = null;
-        stack = new Stack<Point2D>();
+        stack = new Stack<>();
         champdist = 0;
         champnode = null;
     }
@@ -41,9 +41,11 @@ public class KdTree {
 
     private int size(Node x) {
         if (x == null) return 0;
-        int size = size(x.lb) + size(x.rt) + 1;
-        return size;
+        else
+        return x.N;
     }
+
+
 
     public boolean isEmpty() {
         if (root == null) {
@@ -67,9 +69,9 @@ public class KdTree {
 
         if (x == null) {
             if (isEmpty())
-                return new Node(point, !vertical, newNodeRec(point, x), null);
+                return new Node(point, !vertical, newNodeRec(point, x), null,1);
             else
-                return new Node(point, !vertical, newNodeRec(point, parent), parent);
+                return new Node(point, !vertical, newNodeRec(point, parent), parent,1);
         }
         int cmp = x.compareTo(point);
         if (cmp < 0) {
@@ -102,7 +104,7 @@ public class KdTree {
                 x.rt = insert(x.rt, point, x.vertical, x);
             }
         }
-
+        x.N=size(x.lb)+size(x.rt)+1;
 
         return x;
 
@@ -218,14 +220,16 @@ public class KdTree {
         Point2D point;
         RectHV rect;
         boolean vertical;
+        int N;
 
-        Node(Point2D point, boolean vertical, RectHV rect, Node Parent) {
+        Node(Point2D point, boolean vertical, RectHV rect, Node Parent,int N) {
             this.vertical = vertical;
             lb = null;
             rt = null;
             this.point = point;
             this.rect = rect;
             this.parent = Parent;
+            this.N=N;
         }
 
         @Override
@@ -282,6 +286,7 @@ public class KdTree {
             }
             StdDraw.pause(20);
         }
+        System.out.println(tree.size());
        /* Point2D point1 = new Point2D(0.125, 0.75);
         Point2D point2 = new Point2D(0.75, 0.75);
         Point2D point3 = new Point2D(0.75, 0.75);
